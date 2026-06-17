@@ -77,7 +77,7 @@ export function RegisterForm() {
         {serverSuccess && (
           <div
             role="status"
-            className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"
+            className="rounded-lg border border-purple-200 bg-purple-50 px-4 py-3 text-sm text-purple-800"
           >
             {serverSuccess}
           </div>

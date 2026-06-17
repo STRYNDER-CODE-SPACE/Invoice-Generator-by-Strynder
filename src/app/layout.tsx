@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Strynder Invoice Generator",
   description:
     "Professional invoice generator for Nigerian SMBs, creatives, and freelancers.",
+  icons: {
+    icon: "/Strynder logo_favicon_100231.png",
+  },
 };
 
 export default function RootLayout({
@@ -16,7 +19,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={cn("font-sans", geist.variable)}>
-      <body>{children}</body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }

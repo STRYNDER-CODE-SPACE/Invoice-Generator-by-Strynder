@@ -25,7 +25,7 @@ export function AuthForm({ action, submitLabel, fields }: AuthFormProps) {
         </div>
       )}
       {state.success && (
-        <div className="rounded-lg bg-green-50 px-4 py-3 text-sm text-green-700">
+        <div className="rounded-lg bg-purple-50 px-4 py-3 text-sm text-purple-700">
           {state.success}
         </div>
       )}

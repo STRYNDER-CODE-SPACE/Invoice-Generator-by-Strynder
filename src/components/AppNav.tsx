@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { logoutAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
@@ -6,11 +7,16 @@ export function AppNav() {
   return (
     <header className="border-b border-border bg-card">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-        <Link
-          href="/dashboard"
-          className="text-xl font-semibold tracking-tight text-foreground"
-        >
-          Strynder
+        <Link href="/dashboard" className="flex items-center gap-2">
+          <Image
+            src="/Strynder logo_favicon_100231.png"
+            alt="Strynder"
+            width={32}
+            height={32}
+          />
+          <span className="text-xl font-semibold tracking-tight text-foreground">
+            Strynder
+          </span>
         </Link>
         <nav className="flex flex-wrap items-center gap-4 text-sm font-medium text-muted-foreground">
           <Link href="/dashboard" className="hover:text-foreground">
