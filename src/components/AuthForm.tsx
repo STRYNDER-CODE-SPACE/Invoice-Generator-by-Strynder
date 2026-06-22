@@ -74,10 +74,38 @@ export function AuthForm({ action, submitLabel, fields }: AuthFormProps) {
       )}
 
       {fields === "register" && (
-        <p className="text-xs text-muted-foreground">
-          By registering, you agree that your data is stored securely. You are
-          responsible for tax compliance on invoices you generate.
-        </p>
+        <div className="flex items-start gap-3">
+          <input
+            id="agreeToTerms"
+            name="agreeToTerms"
+            type="checkbox"
+            required
+            className="mt-0.5 size-4 shrink-0 cursor-pointer rounded border-input accent-primary"
+          />
+          <label
+            htmlFor="agreeToTerms"
+            className="text-xs leading-relaxed text-muted-foreground cursor-pointer select-none"
+          >
+            I agree to the{" "}
+            <a
+              href="/api/privacy-pdf"
+              onClick={(e) => {
+                e.preventDefault();
+                const link = document.createElement("a");
+                link.href = "/api/privacy-pdf";
+                link.download = "Strynder-Privacy-Policy.pdf";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+              className="font-medium text-primary underline underline-offset-2 hover:text-primary/80 transition-colors"
+            >
+              Privacy Policy
+            </a>
+            . Your data is never sold or shared. We do not store payment
+            information of any kind.
+          </label>
+        </div>
       )}
 
       <Button type="submit" disabled={pending} className="w-full">

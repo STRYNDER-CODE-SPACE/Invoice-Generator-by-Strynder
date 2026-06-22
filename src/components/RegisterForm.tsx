@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { registerAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -30,8 +31,19 @@ export function RegisterForm() {
       email: "",
       password: "",
       confirmPassword: "",
+      agreeToTerms: false,
     },
   });
+
+  function handlePrivacyDownload(e: React.MouseEvent<HTMLAnchorElement>) {
+    e.preventDefault();
+    const link = document.createElement("a");
+    link.href = "/api/privacy-pdf";
+    link.download = "Strynder-Privacy-Policy.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
   function onSubmit(values: RegisterFormValues) {
     setServerError(null);
@@ -140,10 +152,41 @@ export function RegisterForm() {
           )}
         />
 
-        <p className="text-xs leading-relaxed text-muted-foreground">
-          By registering, you agree that your data is stored securely. You are
-          responsible for tax compliance on invoices you generate.
-        </p>
+        <FormField
+          control={form.control}
+          name="agreeToTerms"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-start gap-3">
+                <FormControl>
+                  <Checkbox
+                    id={field.name}
+                    checked={field.value === true}
+                    onChange={(e) => field.onChange(e.target.checked)}
+                    onBlur={field.onBlur}
+                    ref={field.ref}
+                  />
+                </FormControl>
+                <label
+                  htmlFor={field.name}
+                  className="text-xs leading-relaxed text-muted-foreground cursor-pointer select-none"
+                >
+                  I agree to the{" "}
+                  <a
+                    href="/api/privacy-pdf"
+                    onClick={handlePrivacyDownload}
+                    className="font-medium text-primary underline underline-offset-2 hover:text-primary/80 transition-colors"
+                  >
+                    Privacy Policy
+                  </a>
+                  . Your data is never sold or shared. We do not store payment
+                  information of any kind.
+                </label>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Button type="submit" className="w-full" disabled={isPending}>
           {isPending ? "Creating account..." : "Create account"}
