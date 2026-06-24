@@ -5,6 +5,26 @@ import { createClient } from "@/lib/supabase/server";
 
 export type ActionResult = { error?: string; success?: string };
 
+/**
+ * Returns the base URL for auth redirects (verification emails, password resets).
+ *
+ * Priority:
+ * 1. NEXT_PUBLIC_APP_URL — when explicitly set to a non-localhost value (production)
+ * 2. VERCEL_URL — auto-set by Vercel for preview/production deployments
+ * 3. NEXT_PUBLIC_APP_URL — fallback (localhost for local dev)
+ */
+function getBaseUrl(): string {
+  const configured = process.env.NEXT_PUBLIC_APP_URL;
+  if (configured && !configured.includes("localhost")) {
+    return configured;
+  }
+  const vercelUrl = process.env.VERCEL_URL;
+  if (vercelUrl) {
+    return `https://${vercelUrl}`;
+  }
+  return configured || "http://localhost:3000";
+}
+
 function mapAuthError(message: string, context: "login" | "register"): string {
   const lower = message.toLowerCase();
 
@@ -55,7 +75,7 @@ export async function registerAction(
     email,
     password,
     options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+      emailRedirectTo: `${getBaseUrl()}/dashboard`,
     },
   });
 
@@ -109,7 +129,7 @@ export async function forgotPasswordAction(
 
   const supabase = await createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/reset-password`,
+    redirectTo: `${getBaseUrl()}/reset-password`,
   });
 
   if (error) return { error: error.message };
