@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
@@ -8,21 +9,21 @@ export type ActionResult = { error?: string; success?: string };
 /**
  * Returns the base URL for auth redirects (verification emails, password resets).
  *
- * Priority:
- * 1. NEXT_PUBLIC_APP_URL — when explicitly set to a non-localhost value (production)
- * 2. VERCEL_URL — auto-set by Vercel for preview/production deployments
- * 3. NEXT_PUBLIC_APP_URL — fallback (localhost for local dev)
+ * Uses the request Host header so it's always correct — no build-time env var needed.
+ * Falls back to localhost for local dev.
  */
-function getBaseUrl(): string {
-  const configured = process.env.NEXT_PUBLIC_APP_URL;
-  if (configured && !configured.includes("localhost")) {
-    return configured;
+async function getBaseUrl(): Promise<string> {
+  try {
+    const headersList = await headers();
+    const host = headersList.get("x-forwarded-host") || headersList.get("host");
+    if (host) {
+      const protocol = host.startsWith("localhost") ? "http" : "https";
+      return `${protocol}://${host}`;
+    }
+  } catch {
+    // headers() throws if called outside a request context
   }
-  const vercelUrl = process.env.VERCEL_URL;
-  if (vercelUrl) {
-    return `https://${vercelUrl}`;
-  }
-  return configured || "http://localhost:3000";
+  return "http://localhost:3000";
 }
 
 function mapAuthError(message: string, context: "login" | "register"): string {
@@ -75,7 +76,7 @@ export async function registerAction(
     email,
     password,
     options: {
-      emailRedirectTo: `${getBaseUrl()}/dashboard`,
+      emailRedirectTo: `${await getBaseUrl()}/dashboard`,
     },
   });
 
@@ -129,7 +130,7 @@ export async function forgotPasswordAction(
 
   const supabase = await createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${getBaseUrl()}/reset-password`,
+    redirectTo: `${await getBaseUrl()}/reset-password`,
   });
 
   if (error) return { error: error.message };
