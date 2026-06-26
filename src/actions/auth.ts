@@ -76,7 +76,7 @@ export async function registerAction(
     email,
     password,
     options: {
-      emailRedirectTo: `${await getBaseUrl()}/dashboard`,
+      emailRedirectTo: `${await getBaseUrl()}/auth/confirm`,
     },
   });
 
@@ -130,7 +130,7 @@ export async function forgotPasswordAction(
 
   const supabase = await createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${await getBaseUrl()}/reset-password`,
+    redirectTo: `${await getBaseUrl()}/auth/confirm`,
   });
 
   if (error) return { error: error.message };
