@@ -5,6 +5,7 @@ import {
   View,
   StyleSheet,
   Image,
+  Font,
 } from "@react-pdf/renderer";
 import type { InvoicePreviewProps } from "@/components/InvoicePreview";
 import { formatCurrency, formatDate } from "@/lib/format";
@@ -14,13 +15,18 @@ import {
   hasTextContent,
 } from "@/lib/invoice-document";
 
+// Helvetica (the default PDF font) has no glyph for the Naira sign (U+20A6),
+// which caused it to render as a broken/garbled character. Noto Sans covers it.
+Font.register({ family: "NotoSans", src: "/fonts/NotoSans-Regular.ttf" });
+Font.register({ family: "NotoSans-Bold", src: "/fonts/NotoSans-Bold.ttf" });
+
 const styles = StyleSheet.create({
   page: {
     paddingTop: 36,
     paddingBottom: 48,
     paddingHorizontal: 40,
     fontSize: 9,
-    fontFamily: "Helvetica",
+    fontFamily: "NotoSans",
     color: "#111827",
     lineHeight: 1.45,
   },
@@ -57,17 +63,19 @@ const styles = StyleSheet.create({
   },
   businessName: {
     fontSize: 20,
-    fontFamily: "Helvetica-Bold",
-    marginBottom: 2,
+    fontFamily: "NotoSans-Bold",
+    lineHeight: 1.2,
+    marginBottom: 6,
   },
   headerSubtext: {
     fontSize: 9,
     color: "#f3f4f6",
+    lineHeight: 1.3,
     marginTop: 2,
   },
   invoiceBadge: {
     fontSize: 14,
-    fontFamily: "Helvetica-Bold",
+    fontFamily: "NotoSans-Bold",
     letterSpacing: 2,
     textAlign: "right",
   },
@@ -98,12 +106,12 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   metaLabel: {
-    fontFamily: "Helvetica-Bold",
+    fontFamily: "NotoSans-Bold",
     color: "#111827",
   },
   sectionLabel: {
     fontSize: 7,
-    fontFamily: "Helvetica-Bold",
+    fontFamily: "NotoSans-Bold",
     color: "#6b7280",
     letterSpacing: 1.2,
     textTransform: "uppercase",
@@ -114,7 +122,7 @@ const styles = StyleSheet.create({
   },
   clientName: {
     fontSize: 11,
-    fontFamily: "Helvetica-Bold",
+    fontFamily: "NotoSans-Bold",
     marginBottom: 3,
   },
   clientDetail: {
@@ -132,7 +140,7 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   tableHeaderText: {
-    fontFamily: "Helvetica-Bold",
+    fontFamily: "NotoSans-Bold",
     fontSize: 8,
   },
   tableRow: {
@@ -158,7 +166,7 @@ const styles = StyleSheet.create({
   },
   cellTextBold: {
     fontSize: 9,
-    fontFamily: "Helvetica-Bold",
+    fontFamily: "NotoSans-Bold",
   },
   totalsBlock: {
     marginTop: 16,
@@ -188,11 +196,11 @@ const styles = StyleSheet.create({
   },
   grandTotalLabel: {
     fontSize: 11,
-    fontFamily: "Helvetica-Bold",
+    fontFamily: "NotoSans-Bold",
   },
   grandTotalValue: {
     fontSize: 11,
-    fontFamily: "Helvetica-Bold",
+    fontFamily: "NotoSans-Bold",
   },
   paymentBox: {
     marginTop: 20,
