@@ -222,6 +222,15 @@ const styles = StyleSheet.create({
     color: "#6b7280",
     lineHeight: 1.5,
   },
+  watermark: {
+    position: "absolute",
+    bottom: 20,
+    left: 0,
+    right: 0,
+    textAlign: "center",
+    fontSize: 8,
+    color: "#6b7280",
+  },
 });
 
 export function InvoicePdfDocument({
@@ -414,6 +423,10 @@ export function InvoicePdfDocument({
             <Text style={styles.notesText}>{notes}</Text>
           </View>
         )}
+
+        <Text style={styles.watermark} fixed>
+          Create free invoices at strynder.com
+        </Text>
       </Page>
     </Document>
   );
