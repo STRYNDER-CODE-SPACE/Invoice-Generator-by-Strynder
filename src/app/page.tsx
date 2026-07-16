@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -7,7 +8,16 @@ export default function LandingPage() {
     <div className="min-h-screen">
       <header className="border-b border-gray-200 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-          <span className="text-xl font-bold text-emerald-800">Strynder</span>
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/Strynder logo_favicon_100231.png"
+              alt="Strynder"
+              width={36}
+              height={36}
+              priority
+            />
+            <span className="text-xl font-bold text-purple-800">Strynder</span>
+          </Link>
           <div className="flex gap-3">
             <Link
               href="/login"
@@ -24,7 +34,7 @@ export default function LandingPage() {
 
       <main>
         <section className="mx-auto max-w-6xl px-4 py-20 text-center">
-          <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-emerald-700">
+          <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-purple-600">
             Built for Nigerian SMBs
           </p>
           <h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">

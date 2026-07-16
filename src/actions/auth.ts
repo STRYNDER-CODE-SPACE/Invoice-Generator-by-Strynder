@@ -1,9 +1,30 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 export type ActionResult = { error?: string; success?: string };
+
+/**
+ * Returns the base URL for auth redirects (verification emails, password resets).
+ *
+ * Uses the request Host header so it's always correct — no build-time env var needed.
+ * Falls back to localhost for local dev.
+ */
+async function getBaseUrl(): Promise<string> {
+  try {
+    const headersList = await headers();
+    const host = headersList.get("x-forwarded-host") || headersList.get("host");
+    if (host) {
+      const protocol = host.startsWith("localhost") ? "http" : "https";
+      return `${protocol}://${host}`;
+    }
+  } catch {
+    // headers() throws if called outside a request context
+  }
+  return "http://localhost:3000";
+}
 
 function mapAuthError(message: string, context: "login" | "register"): string {
   const lower = message.toLowerCase();
@@ -55,7 +76,7 @@ export async function registerAction(
     email,
     password,
     options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+      emailRedirectTo: `${await getBaseUrl()}/auth/confirm`,
     },
   });
 
@@ -66,7 +87,7 @@ export async function registerAction(
   if (data.user && !data.session) {
     return {
       success:
-        "Account created. Check your email to confirm your address, then sign in.",
+        "Account created. Check your mail to verify, then sign in.",
     };
   }
 
@@ -109,7 +130,7 @@ export async function forgotPasswordAction(
 
   const supabase = await createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/reset-password`,
+    redirectTo: `${await getBaseUrl()}/auth/confirm`,
   });
 
   if (error) return { error: error.message };

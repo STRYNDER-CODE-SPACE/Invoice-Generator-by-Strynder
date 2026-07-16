@@ -48,15 +48,15 @@ export default async function DashboardPage() {
       <div className="grid gap-6 md:grid-cols-3">
         <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
           <h2 className="mb-2 text-lg font-semibold">Profile Completion</h2>
-          <p className="text-3xl font-bold text-emerald-800">{completion}%</p>
+          <p className="text-3xl font-bold text-purple-800">{completion}%</p>
           <p className="mt-2 text-sm text-gray-500">
-            <Link href="/profile" className="text-emerald-700 hover:underline">
+            <Link href="/profile" className="text-purple-700 hover:underline">
               Complete profile
             </Link>
             {" · "}
             <Link
               href="/payment-details"
-              className="text-emerald-700 hover:underline"
+              className="text-purple-700 hover:underline"
             >
               Payment details
             </Link>
@@ -79,14 +79,14 @@ export default async function DashboardPage() {
       <section className="rounded-xl border border-gray-200 bg-white shadow-sm">
         <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
           <h2 className="text-lg font-semibold">Recent Invoices</h2>
-          <Link href="/invoices" className="text-sm text-emerald-700 hover:underline">
+          <Link href="/invoices" className="text-sm text-purple-700 hover:underline">
             View all
           </Link>
         </div>
         {!invoices?.length ? (
           <p className="px-6 py-8 text-center text-sm text-gray-500">
             No invoices yet.{" "}
-            <Link href="/invoices/new" className="text-emerald-700 hover:underline">
+            <Link href="/invoices/new" className="text-purple-700 hover:underline">
               Create your first invoice
             </Link>
           </p>
@@ -111,7 +111,7 @@ export default async function DashboardPage() {
                     <td className="px-6 py-3">
                       <Link
                         href={`/invoices/${inv.id}`}
-                        className="font-medium text-emerald-700 hover:underline"
+                        className="font-medium text-purple-700 hover:underline"
                       >
                         {inv.invoice_number}
                       </Link>

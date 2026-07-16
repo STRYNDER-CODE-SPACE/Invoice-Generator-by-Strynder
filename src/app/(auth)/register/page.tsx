@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { RegisterForm } from "@/components/RegisterForm";
 import {
@@ -13,11 +14,17 @@ export default function RegisterPage() {
     <div className="flex min-h-screen items-center justify-center px-4 py-12">
       <div className="w-full max-w-md space-y-8">
         <div className="space-y-2 text-center">
-          <Link
-            href="/"
-            className="text-2xl font-semibold tracking-tight text-foreground"
-          >
-            Strynder
+          <Link href="/" className="inline-flex items-center gap-2">
+            <Image
+              src="/Strynder logo_favicon_100231.png"
+              alt="Strynder"
+              width={40}
+              height={40}
+              priority
+            />
+            <span className="text-2xl font-semibold tracking-tight text-foreground">
+              Strynder
+            </span>
           </Link>
           <p className="text-sm text-muted-foreground">
             Start creating branded invoices in minutes
